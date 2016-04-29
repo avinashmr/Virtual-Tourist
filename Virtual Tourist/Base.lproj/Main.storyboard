@@ -40,18 +40,27 @@
                                     <outletCollection property="gestureRecognizers" destination="ulG-zU-xLc" appends="YES" id="PFF-Hu-LxC"/>
                                 </connections>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIf-SL-TD4">
+                                <rect key="frame" x="279" y="579" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="OKD-Kp-4jR" firstAttribute="leading" secondItem="Jrb-wL-GaA" secondAttribute="leading" id="93x-BG-yUp"/>
                             <constraint firstItem="OKD-Kp-4jR" firstAttribute="top" secondItem="Od8-9R-oDz" secondAttribute="bottom" id="QVf-or-bhz"/>
+                            <constraint firstItem="PIf-SL-TD4" firstAttribute="centerX" secondItem="Jrb-wL-GaA" secondAttribute="centerX" id="Sek-jD-ZRa"/>
+                            <constraint firstItem="Yez-qo-ABz" firstAttribute="top" secondItem="PIf-SL-TD4" secondAttribute="bottom" id="e8X-8d-xA9"/>
                             <constraint firstAttribute="trailing" secondItem="OKD-Kp-4jR" secondAttribute="trailing" id="nbU-RV-aO0"/>
                             <constraint firstItem="Yez-qo-ABz" firstAttribute="top" secondItem="OKD-Kp-4jR" secondAttribute="bottom" id="uVS-08-hMp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="6RM-my-N6V"/>
                     <connections>
+                        <outlet property="debugTextLabel" destination="PIf-SL-TD4" id="n7y-Qf-eUT"/>
                         <outlet property="mapView" destination="OKD-Kp-4jR" id="Yas-31-ZEk"/>
                     </connections>
                 </viewController>

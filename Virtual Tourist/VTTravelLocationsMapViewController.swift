@@ -12,7 +12,11 @@ import CoreData
 
 class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsControllerDelegate {
 
+    var annotation: MKPointAnnotation!
+    var pins = [Pin]()
+
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var debugTextLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,18 +24,23 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         mapView.delegate = self
         restoreMapRegion()
 
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
+
+        fetchedResultsController.delegate = self
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
         // Restore Pins
-//        do {
-//            try fetchedResultsController.performFetch()
-//        } catch {}
+        retrievePinsFromCoreData()
     }
 
     // Mark: - IBAction
 
     // Long Press Action
-
-    var annotation: MKPointAnnotation!
-
     @IBAction func handleLongPress(gesture: UILongPressGestureRecognizer) {
 
         let touchpoint = gesture.locationInView(mapView)
@@ -48,12 +57,9 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         }
 
         if gesture.state == .Ended {
-            let city = CLGeocoder()
-            city.reverseGeocodeLocation(CLLocation(latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude)) { (placemark, error) in
-                if (error == nil) {
-                    print(placemark![0].locality)
-                }
-            }
+            dispatch_async(dispatch_get_main_queue(), {
+                self.savePinToCoreData(self.annotation)
+            })
         }
     }
 
@@ -67,7 +73,7 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
 
         let fetchRequest = NSFetchRequest(entityName: "Pin")
 
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "longitude", ascending: true)]
 
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: self.sharedContext,
@@ -78,7 +84,54 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         
     }()
 
-    // MARK: - Save Map Region
+    // Saves Pin to Core Data when a Pin is dropped into the map.
+    func savePinToCoreData(annotation: MKPointAnnotation!) {
+        if let newAnnotation = annotation {
+            print(newAnnotation.coordinate.latitude)
+            print(newAnnotation.coordinate.longitude)
+//
+//
+//            let city = CLGeocoder()
+//            var cityName: String?
+//
+//            city.reverseGeocodeLocation(CLLocation(latitude: newAnnotation.coordinate.latitude, longitude: newAnnotation.coordinate.longitude)) { (placemark, error) in
+//                if (error == nil) {
+//                    print(placemark![0].locality)
+//                    let cityName = placemark![0].locality
+//                } else {
+//                    cityName = nil
+//                }
+//            }
+
+            let dictionary: [String:AnyObject] = [
+                Pin.Keys.Latitude   : newAnnotation.coordinate.latitude,
+                Pin.Keys.Longitude  : newAnnotation.coordinate.longitude,
+            ]
+
+            let _ = Pin(dictionary: dictionary, context: sharedContext)
+
+            CoreDataStackManager.sharedInstance().saveContext()
+            print("pincdsave")
+        }
+    }
+
+    func retrievePinsFromCoreData() {
+
+        let data = fetchedResultsController.sections![0]
+
+        // Confusing IF statement translation: Is the number of objects not empty?
+        if !(data.objects?.isEmpty)! {
+            pins = data.objects as! [Pin]
+            for p in pins {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: p.latitude, longitude: p.longitude)
+                mapView.addAnnotation(annotation)
+            }
+            debugTextLabel.text = "restored"
+        }
+    }
+
+    // MARK: - Map Region Save/Restore
 
     // Saves the Map region to restore state using NSUserDefaults
     private func saveMapRegion() {
@@ -136,7 +189,4 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
                     }, completion: nil)
             }
         }
-
-
-
     }
