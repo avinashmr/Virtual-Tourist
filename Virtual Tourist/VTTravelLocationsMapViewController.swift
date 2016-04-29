@@ -12,12 +12,15 @@ import CoreData
 
 class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsControllerDelegate {
 
+    // MARK: - Local Variables
     var annotation: MKPointAnnotation!
     var pins = [Pin]()
 
+    // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var debugTextLabel: UILabel!
 
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,7 +41,7 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         retrievePinsFromCoreData()
     }
 
-    // Mark: - IBAction
+    // Mark: - IBActions
 
     // Long Press Action
     @IBAction func handleLongPress(gesture: UILongPressGestureRecognizer) {
