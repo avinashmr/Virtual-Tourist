@@ -90,8 +90,6 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
     // Saves Pin to Core Data when a Pin is dropped into the map.
     func savePinToCoreData(annotation: MKPointAnnotation!) {
         if let newAnnotation = annotation {
-            print(newAnnotation.coordinate.latitude)
-            print(newAnnotation.coordinate.longitude)
 //
 //
 //            let city = CLGeocoder()
@@ -120,6 +118,7 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
 
     func retrievePinsFromCoreData() {
 
+        mapView.removeAnnotations(mapView.annotations)
         let data = fetchedResultsController.sections![0]
 
         // Confusing IF statement translation: Is the number of objects not empty?
@@ -192,4 +191,18 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
                     }, completion: nil)
             }
         }
+
+        func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+            dispatch_async(dispatch_get_main_queue(), {
+                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
+
+                print("Annotation: \(view.annotation?.coordinate)")
+                controller.oldMapView = mapView
+                controller.annotationView = view
+
+                self.navigationController!.pushViewController(controller, animated: true)
+            })
+        }
+
+
     }

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -33,6 +34,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIf-SL-TD4">
+                                <rect key="frame" x="279" y="579" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="OKD-Kp-4jR">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <gestureRecognizers/>
@@ -40,12 +47,6 @@
                                     <outletCollection property="gestureRecognizers" destination="ulG-zU-xLc" appends="YES" id="PFF-Hu-LxC"/>
                                 </connections>
                             </mapView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIf-SL-TD4">
-                                <rect key="frame" x="279" y="579" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -62,6 +63,7 @@
                     <connections>
                         <outlet property="debugTextLabel" destination="PIf-SL-TD4" id="n7y-Qf-eUT"/>
                         <outlet property="mapView" destination="OKD-Kp-4jR" id="Yas-31-ZEk"/>
+                        <segue destination="477-9v-O7u" kind="show" id="eAc-Ub-K9s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJl-fg-KtM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -72,6 +74,42 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="741" y="304"/>
+        </scene>
+        <!--Photo Album-->
+        <scene sceneID="WO5-Tn-RMW">
+            <objects>
+                <viewController storyboardIdentifier="VTPhotoAlbumViewController" id="477-9v-O7u" customClass="VTPhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wbp-Rk-PGX"/>
+                        <viewControllerLayoutGuide type="bottom" id="X2c-vk-RA8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fqG-bx-8NC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNC-pe-HAD">
+                                <rect key="frame" x="0.0" y="64" width="600" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="Kpi-De-uLZ"/>
+                                </constraints>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eNC-pe-HAD" firstAttribute="top" secondItem="Wbp-Rk-PGX" secondAttribute="bottom" id="3PT-XB-srL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="eNC-pe-HAD" secondAttribute="trailing" constant="-20" id="X71-53-LI0"/>
+                            <constraint firstItem="eNC-pe-HAD" firstAttribute="leading" secondItem="fqG-bx-8NC" secondAttribute="leadingMargin" constant="-20" id="stl-gd-yWU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Photo Album" id="xQz-BP-hfh"/>
+                    <connections>
+                        <outlet property="albumNavigationController" destination="xQz-BP-hfh" id="yXl-uO-Qbc"/>
+                        <outlet property="mapView" destination="eNC-pe-HAD" id="Eai-bT-7y1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8dq-dR-Q3x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1451" y="304"/>
         </scene>
     </scenes>
 </document>

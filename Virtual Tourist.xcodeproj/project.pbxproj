@@ -20,6 +20,7 @@
 		E1BBAF321CD2C742003F724A /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBAF311CD2C742003F724A /* ImageCache.swift */; };
 		E1BBAF341CD2C7FD003F724A /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBAF331CD2C7FD003F724A /* FlickrClient.swift */; };
 		E1BBAF361CD2C854003F724A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBAF351CD2C854003F724A /* Config.swift */; };
+		E1BBAF381CD425E8003F724A /* VTPhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBAF371CD425E8003F724A /* VTPhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		E1BBAF311CD2C742003F724A /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		E1BBAF331CD2C7FD003F724A /* FlickrClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		E1BBAF351CD2C854003F724A /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		E1BBAF371CD425E8003F724A /* VTPhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTPhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				E10A3ECA1CD12D9D00D2685D /* Model */,
 				E10A3ECB1CD12DA300D2685D /* View */,
 				E10A3ECC1CD12DA800D2685D /* Controller */,
+				E10A3ED01CD12E1A00D2685D /* Storyboards */,
 				E10A3ECF1CD12E0700D2685D /* Other */,
 			);
 			path = "Virtual Tourist";
@@ -102,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				E10A3ECD1CD12DE700D2685D /* VTTravelLocationsMapViewController.swift */,
+				E1BBAF371CD425E8003F724A /* VTPhotoAlbumViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -111,7 +115,6 @@
 			children = (
 				E10A3EC41CD12D9400D2685D /* Info.plist */,
 				E10A3EBF1CD12D9400D2685D /* Assets.xcassets */,
-				E10A3ED01CD12E1A00D2685D /* Storyboards */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				E1BBAF341CD2C7FD003F724A /* FlickrClient.swift in Sources */,
 				E10A3EB91CD12D9400D2685D /* AppDelegate.swift in Sources */,
 				E1BBAF2E1CD2C6B4003F724A /* FlickrConstants.swift in Sources */,
+				E1BBAF381CD425E8003F724A /* VTPhotoAlbumViewController.swift in Sources */,
 				E1BBAF321CD2C742003F724A /* ImageCache.swift in Sources */,
 				E1BBAF241CD277CE003F724A /* Model.xcdatamodeld in Sources */,
 				E1BBAF281CD288EA003F724A /* Pin.swift in Sources */,
