@@ -108,8 +108,8 @@
 		E10A3ECC1CD12DA800D2685D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E1BBAF371CD425E8003F724A /* VTPhotoAlbumViewController.swift */,
 				E10A3ECD1CD12DE700D2685D /* VTTravelLocationsMapViewController.swift */,
+				E1BBAF371CD425E8003F724A /* VTPhotoAlbumViewController.swift */,
 				E1F614F71CD5253B004041F5 /* VTPhotoCell.swift */,
 			);
 			name = Controller;

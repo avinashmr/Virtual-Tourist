@@ -19,8 +19,7 @@ class Photo: NSManagedObject {
 
     @NSManaged var imagePathURL: String
     @NSManaged var localFileURL: String
-//    @NSManaged var index: Int64
-    @NSManaged var pin: Pin
+    @NSManaged var location: Pin
 
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -34,7 +33,7 @@ class Photo: NSManagedObject {
 
         // Dictionary
         self.imagePathURL = imageURL
-        self.pin = pin
+
     }
 
 

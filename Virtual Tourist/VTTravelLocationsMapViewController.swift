@@ -32,13 +32,15 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         } catch {}
 
         fetchedResultsController.delegate = self
+
+        retrievePinsFromCoreData()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         // Restore Pins
-        retrievePinsFromCoreData()
+
     }
 
     // Mark: - IBActions
@@ -76,7 +78,7 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
 
         let fetchRequest = NSFetchRequest(entityName: "Pin")
 
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "longitude", ascending: true)]
+        fetchRequest.sortDescriptors = [/*NSSortDescriptor(key: "annotation", ascending: true)*/]
 
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: self.sharedContext,
@@ -90,17 +92,12 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
     // Saves Pin to Core Data when a Pin is dropped into the map.
     func savePinToCoreData(annotation: MKPointAnnotation!) {
 
-        if let newAnnotation = annotation {
-            let dictionary: [String:AnyObject] = [
-                Pin.Keys.Latitude   : newAnnotation.coordinate.latitude,
-                Pin.Keys.Longitude  : newAnnotation.coordinate.longitude,
-            ]
+        let saveAnnotation = Pin(insertIntoMangedObjectContext: sharedContext)
+        saveAnnotation.annotation = annotation
 
-            let _ = Pin(dictionary: dictionary, context: sharedContext)
-
-            CoreDataStackManager.sharedInstance().saveContext()
-            print("pincdsave")
-        }
+        CoreDataStackManager.sharedInstance().saveContext()
+        print("pincdsave")
+        
     }
 
     func retrievePinsFromCoreData() {
@@ -111,12 +108,12 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         // Confusing IF statement translation: Is the number of objects not empty?
         if !(data.objects?.isEmpty)! {
             pins = data.objects as! [Pin]
+            print(pins.count)
+            debugTextLabel.text = "restored \(pins.count) pins"
             for p in pins {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = CLLocationCoordinate2D(latitude: p.latitude, longitude: p.longitude)
-                mapView.addAnnotation(annotation)
+                mapView.addAnnotation(p.annotation)
+
             }
-            debugTextLabel.text = "restored"
         }
     }
 
@@ -180,22 +177,15 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         }
 
         func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-            dispatch_async(dispatch_get_main_queue(), {
-                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
-
-                controller.oldMapView = mapView
-                controller.annotationView = view
-
-                if let newAnnotation = view.annotation {
-                    let dictionary: [String:AnyObject] = [
-                        Pin.Keys.Latitude   : newAnnotation.coordinate.latitude,
-                        Pin.Keys.Longitude  : newAnnotation.coordinate.longitude,
-                    ]
-                    controller.pin = Pin(dictionary: dictionary, context: controller.sharedContext)
-                }
-
-                self.navigationController!.pushViewController(controller, animated: true)
-            })
+//            dispatch_async(dispatch_get_main_queue(), {
+//                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
+//
+//                controller.oldMapView = mapView
+//                controller.annotationView = view
+//                controller.location = annotation.coordinate as Pin
+//
+//                self.navigationController!.pushViewController(controller, animated: true)
+//            })
         }
 
 

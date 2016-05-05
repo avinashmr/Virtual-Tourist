@@ -36,7 +36,7 @@ class FlickrClient : NSObject {
                 let newError = FlickrClient.errorForData(data, response: response, error: error)
                 completionHandler(result: nil, error: newError)
             } else {
-                print("Step 3 - taskForResource's completionHandler is invoked.")
+//                print("Step 3 - taskForResource's completionHandler is invoked.")
                 FlickrClient.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
             }
         }
@@ -46,21 +46,46 @@ class FlickrClient : NSObject {
         return task
     }
 
-    func taskForURL(url: String, completionHandler: CompletionHander) -> Void {
+    // MARK: - All purpose task method for images
 
-        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+    func taskForIMAGE(imageURL: String, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
 
-        let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
+        let url = NSURL(string: imageURL)
+
+//        print(url)
+
+        let request = NSURLRequest(URL: url!)
+
+        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+
             if let error = downloadError {
                 let newError = FlickrClient.errorForData(data, response: response, error: error)
-                completionHandler(result: nil, error: newError)
+                completionHandler(imageData: nil, error: newError)
             } else {
-                completionHandler(result: data, error: nil)
+                completionHandler(imageData: data, error: nil)
             }
         }
 
         task.resume()
+        
+        return task
     }
+
+//    func taskForURL(url: String, completionHandler: CompletionHander) -> Void {
+//
+//        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+//
+//        let task = session.dataTaskWithRequest(request) { (data, response, downloadError) in
+//            if let error = downloadError {
+//                let newError = FlickrClient.errorForData(data, response: response, error: error)
+//                completionHandler(result: nil, error: newError)
+//            } else {
+//                completionHandler(result: data, error: nil)
+//            }
+//        }
+//
+//        task.resume()
+//    }
 
     private func flickrURLFromParameters(parameters: [String:AnyObject]) -> NSURL {
 
@@ -77,34 +102,6 @@ class FlickrClient : NSObject {
 
         return components.URL!
     }
-
-    // MARK: - All purpose task method for images
-
-//    func taskForImage(parameters: [String : AnyObject], completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
-//
-////        let baseURL = Constants.
-////        let url = baseURL.URLByAppendingPathComponent(size).URLByAppendingPathComponent(filePath)
-//
-//        let url = FlickrClient.Constants.BaseUrl + FlickrClient.escapedParameters(parameters)
-//
-//        print(url)
-//
-//        let request = NSURLRequest(URL: NSURL(string: url)!)
-//
-//        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
-//
-//            if let error = downloadError {
-//                let newError = FlickrClient.errorForData(data, response: response, error: error)
-//                completionHandler(imageData: nil, error: newError)
-//            } else {
-//                completionHandler(imageData: data, error: nil)
-//            }
-//        }
-//
-//        task.resume()
-//
-//        return task
-//    }
 
 
     // MARK: - Helpers
@@ -150,37 +147,10 @@ class FlickrClient : NSObject {
         if let error = parsingError {
             completionHandler(result: nil, error: error)
         } else {
-            print("Step 4 - parseJSONWithCompletionHandler is invoked.")
+//            print("Step 4 - parseJSONWithCompletionHandler is invoked.")
             completionHandler(result: parsedResult, error: nil)
         }
     }
-
-    // URL Encoding a dictionary into a parameter string
-
-//    class func escapedParameters(parameters: [String : AnyObject]) -> String {
-//
-//        var urlVars = [String]()
-//
-//        for (key, value) in parameters {
-//
-//            // make sure that it is a string value
-//            let stringValue = "\(value)"
-//
-//            // Escape it
-//            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-//
-//            // Append it
-//
-//            if let unwrappedEscapedValue = escapedValue {
-//                urlVars += [key + "=" + "\(unwrappedEscapedValue)"]
-//            } else {
-//                print("Warning: trouble excaping string \"\(stringValue)\"")
-//            }
-//        }
-//
-//        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
-//    }
-
 
     // MARK: - Shared Instance
 
@@ -192,12 +162,4 @@ class FlickrClient : NSObject {
 
         return Singleton.sharedInstance
     }
-
-
-    // MARK: - Shared Image Cache
-
-//    struct Caches {
-//        static let imageCache = ImageCache()
-//    }
-
 }

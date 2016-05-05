@@ -36,7 +36,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
     
     var annotationView: MKAnnotationView? = nil
     var oldMapView: MKMapView? = nil
-    var pin: Pin!
+    var location: Pin?
 
     // MARK: - Life Cycle
 
@@ -46,9 +46,11 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         mapView.delegate = self
         mapView.setRegion((oldMapView?.region)!, animated: false)
 
-//        pin.latitude = (annotationView?.annotation?.coordinate.latitude)!
-//        pin.longitude = (annotationView?.annotation?.coordinate.longitude)!
-
+//        if let latitude = annotationView?.annotation?.coordinate.latitude,
+//                longitude = annotationView?.annotation?.coordinate.longitude {
+//            location!.latitude = latitude
+//            location!.longitude = longitude
+//        }
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -116,7 +118,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         let fetchRequest = NSFetchRequest(entityName: "Photo")
 
         fetchRequest.sortDescriptors = [/*NSSortDescriptor(key: "title", ascending: true)*/]
-        fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin);
+        fetchRequest.predicate = NSPredicate(format: "pin == %@", self.location!);
 
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: self.sharedContext,
@@ -134,7 +136,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         }
         CoreDataStackManager.sharedInstance().saveContext()
 
-        FlickrClient.sharedInstance().searchByLatLon(pin) { (success, error) in
+        FlickrClient.sharedInstance().searchByLatLon(location!) { (success, error) in
             if let error = error {
                 print("error in getPhotoCollection")
             } else if success {
@@ -268,7 +270,7 @@ extension VTPhotoAlbumViewController: NSFetchedResultsControllerDelegate {
         deletedIndexPaths = [NSIndexPath]()
         updatedIndexPaths = [NSIndexPath]()
 
-        print("in controllerWillChangeContent")
+//        print("in controllerWillChangeContent")
     }
 
     // The second method may be called multiple times, once for each Color object that is added, deleted, or changed.
@@ -320,7 +322,7 @@ extension VTPhotoAlbumViewController: NSFetchedResultsControllerDelegate {
     // Notice that all of the changes are performed inside a closure that is handed to the collection view.
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
 
-        print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
+//        print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
 
         collectionView.performBatchUpdates({() -> Void in
 

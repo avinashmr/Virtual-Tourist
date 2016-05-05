@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Virtual Tourist/VTPhotoAlbumViewController.swift"
-            timestampString = "484114177.905833"
+            timestampString = "484118684.249708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Virtual Tourist/FlickrConvenience.swift"
-            timestampString = "484115999.47836"
+            filePath = "Virtual Tourist/VTTravelLocationsMapViewController.swift"
+            timestampString = "484161936.090347"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "searchByLatLon(_:parameters:pageNumber:completionHandler:)"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "savePinToCoreData(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

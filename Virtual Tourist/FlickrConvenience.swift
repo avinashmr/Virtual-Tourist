@@ -17,8 +17,8 @@ extension FlickrClient {
         let parameters: [String: AnyObject] = [
             FlickrParameterKeys.Method:     FlickrParameterValues.SearchMethod,
             FlickrParameterKeys.APIKey:     FlickrParameterValues.APIKey, // Move this to FlickrClient
-            FlickrParameterKeys.Latitude:   pin.latitude,
-            FlickrParameterKeys.Longitude:  pin.longitude,
+            FlickrParameterKeys.Latitude:   pin.annotation.coordinate.latitude,
+            FlickrParameterKeys.Longitude:  pin.annotation.coordinate.longitude,
             FlickrParameterKeys.SafeSearch: FlickrParameterValues.UseSafeSearch,
             FlickrParameterKeys.Extras:     FlickrParameterValues.MediumURL,
             FlickrParameterKeys.Format:     FlickrParameterValues.ResponseFormat,
@@ -71,7 +71,6 @@ extension FlickrClient {
 
                     for photo in photosArray {
                         let imageURL = photo[FlickrParameterValues.MediumURL] as! String
-                        print(imageURL)
                         // Create a new Photo object
                         let newPhoto = Photo(imageURL: imageURL, pin: pin, context: self.sharedContext)
 
@@ -82,30 +81,7 @@ extension FlickrClient {
         }
     }
 
-    // MARK: - All purpose task method for images
 
-    func taskForIMAGE(imageURL: String, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
-
-        let url = NSURL(string: imageURL)
-
-        print(url)
-
-        let request = NSURLRequest(URL: url!)
-
-        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
-
-            if let error = downloadError {
-                let newError = FlickrClient.errorForData(data, response: response, error: error)
-                completionHandler(imageData: nil, error: newError)
-            } else {
-                completionHandler(imageData: data, error: nil)
-            }
-        }
-
-        task.resume()
-
-        return task
-    }
 
     // Download the Photo given the URL
 //    func downloadPhoto(photo: Photo, completionHandler: (success: Bool, error: NSError?) -> Void) {

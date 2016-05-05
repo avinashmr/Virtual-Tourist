@@ -7,16 +7,11 @@
 //
 
 import CoreData
+import MapKit
 
 class Pin: NSManagedObject {
 
-    struct Keys {
-        static let Latitude = "latitude"
-        static let Longitude = "longitude"
-    }
-
-    @NSManaged var latitude: Double
-    @NSManaged var longitude: Double
+    @NSManaged var annotation: MKPointAnnotation
     @NSManaged var photos: [Photo]
 
     // Standard Core Data init method.
@@ -24,13 +19,19 @@ class Pin: NSManagedObject {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
 
-    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+    init(annotation: MKPointAnnotation, context: NSManagedObjectContext) {
 
         let entity =  NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
 
         super.init(entity: entity,insertIntoManagedObjectContext: context)
 
-        latitude = dictionary[Keys.Latitude] as! Double
-        longitude = dictionary[Keys.Longitude] as! Double
+        self.annotation = annotation
+    }
+
+    convenience init(insertIntoMangedObjectContext context: NSManagedObjectContext) {
+        let entity = NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
+        self.init(entity: entity, insertIntoManagedObjectContext: context)
+
+        annotation = MKPointAnnotation()
     }
 }
