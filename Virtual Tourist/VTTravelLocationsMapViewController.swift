@@ -23,7 +23,7 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         mapView.delegate = self
         restoreMapRegion()
 
@@ -89,21 +89,8 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
 
     // Saves Pin to Core Data when a Pin is dropped into the map.
     func savePinToCoreData(annotation: MKPointAnnotation!) {
-        if let newAnnotation = annotation {
-//
-//
-//            let city = CLGeocoder()
-//            var cityName: String?
-//
-//            city.reverseGeocodeLocation(CLLocation(latitude: newAnnotation.coordinate.latitude, longitude: newAnnotation.coordinate.longitude)) { (placemark, error) in
-//                if (error == nil) {
-//                    print(placemark![0].locality)
-//                    let cityName = placemark![0].locality
-//                } else {
-//                    cityName = nil
-//                }
-//            }
 
+        if let newAnnotation = annotation {
             let dictionary: [String:AnyObject] = [
                 Pin.Keys.Latitude   : newAnnotation.coordinate.latitude,
                 Pin.Keys.Longitude  : newAnnotation.coordinate.longitude,
@@ -196,9 +183,16 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
             dispatch_async(dispatch_get_main_queue(), {
                 let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
 
-                print("Annotation: \(view.annotation?.coordinate)")
                 controller.oldMapView = mapView
                 controller.annotationView = view
+
+                if let newAnnotation = view.annotation {
+                    let dictionary: [String:AnyObject] = [
+                        Pin.Keys.Latitude   : newAnnotation.coordinate.latitude,
+                        Pin.Keys.Longitude  : newAnnotation.coordinate.longitude,
+                    ]
+                    controller.pin = Pin(dictionary: dictionary, context: controller.sharedContext)
+                }
 
                 self.navigationController!.pushViewController(controller, animated: true)
             })
