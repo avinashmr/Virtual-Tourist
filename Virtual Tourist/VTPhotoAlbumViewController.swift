@@ -36,7 +36,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
     
     var annotationView: MKAnnotationView? = nil
     var oldMapView: MKMapView? = nil
-    var location: Pin?
+    var pin: Pin!
 
     // MARK: - Life Cycle
 
@@ -46,11 +46,8 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         mapView.delegate = self
         mapView.setRegion((oldMapView?.region)!, animated: false)
 
-//        if let latitude = annotationView?.annotation?.coordinate.latitude,
-//                longitude = annotationView?.annotation?.coordinate.longitude {
-//            location!.latitude = latitude
-//            location!.longitude = longitude
-//        }
+        pin.coordinate.latitude = 12.972081
+        pin.coordinate.longitude = 77.593324
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -118,7 +115,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         let fetchRequest = NSFetchRequest(entityName: "Photo")
 
         fetchRequest.sortDescriptors = [/*NSSortDescriptor(key: "title", ascending: true)*/]
-        fetchRequest.predicate = NSPredicate(format: "pin == %@", self.location!);
+        fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin!);
 
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: self.sharedContext,
@@ -136,7 +133,7 @@ class VTPhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollect
         }
         CoreDataStackManager.sharedInstance().saveContext()
 
-        FlickrClient.sharedInstance().searchByLatLon(location!) { (success, error) in
+        FlickrClient.sharedInstance().searchByLatLon(pin!) { (success, error) in
             if let error = error {
                 print("error in getPhotoCollection")
             } else if success {

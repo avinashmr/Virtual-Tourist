@@ -9,29 +9,36 @@
 import CoreData
 import MapKit
 
-class Pin: NSManagedObject {
+class Pin: NSManagedObject, MKAnnotation {
 
-    @NSManaged var annotation: MKPointAnnotation
+    @NSManaged var latitude: Double
+    @NSManaged var longitude: Double
     @NSManaged var photos: [Photo]
+
+    // Set/get created to conform to MKAnnotation Protocol
+    var coordinate: CLLocationCoordinate2D {
+        set {
+            self.latitude = newValue.latitude
+            self.longitude = newValue.longitude
+        }
+        get {
+            return CLLocationCoordinate2DMake(latitude, longitude)
+        }
+    }
 
     // Standard Core Data init method.
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
 
-    init(annotation: MKPointAnnotation, context: NSManagedObjectContext) {
+    // Initialize a Pin object by sending an Annotation
+    init(coordinate: CLLocationCoordinate2D, context: NSManagedObjectContext) {
 
         let entity =  NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
 
         super.init(entity: entity,insertIntoManagedObjectContext: context)
 
-        self.annotation = annotation
-    }
-
-    convenience init(insertIntoMangedObjectContext context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
-
-        annotation = MKPointAnnotation()
+        self.latitude = coordinate.latitude
+        self.longitude = coordinate.longitude
     }
 }

@@ -17,8 +17,8 @@ extension FlickrClient {
         let parameters: [String: AnyObject] = [
             FlickrParameterKeys.Method:     FlickrParameterValues.SearchMethod,
             FlickrParameterKeys.APIKey:     FlickrParameterValues.APIKey, // Move this to FlickrClient
-            FlickrParameterKeys.Latitude:   pin.annotation.coordinate.latitude,
-            FlickrParameterKeys.Longitude:  pin.annotation.coordinate.longitude,
+            FlickrParameterKeys.Latitude:   pin.latitude,
+            FlickrParameterKeys.Longitude:  pin.longitude,
             FlickrParameterKeys.SafeSearch: FlickrParameterValues.UseSafeSearch,
             FlickrParameterKeys.Extras:     FlickrParameterValues.MediumURL,
             FlickrParameterKeys.Format:     FlickrParameterValues.ResponseFormat,

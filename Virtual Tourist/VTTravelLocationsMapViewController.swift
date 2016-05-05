@@ -36,13 +36,6 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         retrievePinsFromCoreData()
     }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // Restore Pins
-
-    }
-
     // Mark: - IBActions
 
     // Long Press Action
@@ -92,8 +85,8 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
     // Saves Pin to Core Data when a Pin is dropped into the map.
     func savePinToCoreData(annotation: MKPointAnnotation!) {
 
-        let saveAnnotation = Pin(insertIntoMangedObjectContext: sharedContext)
-        saveAnnotation.annotation = annotation
+        let coordinates = CLLocationCoordinate2DMake(annotation.coordinate.latitude, annotation.coordinate.longitude)
+        let saveAnnotation = Pin(coordinate: coordinates, context: sharedContext)
 
         CoreDataStackManager.sharedInstance().saveContext()
         print("pincdsave")
@@ -110,8 +103,13 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
             pins = data.objects as! [Pin]
             print(pins.count)
             debugTextLabel.text = "restored \(pins.count) pins"
-            for p in pins {
-                mapView.addAnnotation(p.annotation)
+
+            for pin in pins {
+
+                annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2DMake(pin.latitude, pin.longitude)
+
+                mapView.addAnnotation(annotation)
 
             }
         }
@@ -177,15 +175,17 @@ class VTTravelLocationsMapViewController : UIViewController, NSFetchedResultsCon
         }
 
         func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-//            dispatch_async(dispatch_get_main_queue(), {
-//                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
-//
-//                controller.oldMapView = mapView
-//                controller.annotationView = view
-//                controller.location = annotation.coordinate as Pin
-//
-//                self.navigationController!.pushViewController(controller, animated: true)
-//            })
+            dispatch_async(dispatch_get_main_queue(), {
+                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("VTPhotoAlbumViewController") as! VTPhotoAlbumViewController
+
+                let annotation = view.annotation!
+                print(annotation.coordinate)
+//                controller.pin.coordinate = annotation.coordinate
+                controller.oldMapView = mapView
+                controller.annotationView = view
+
+                self.navigationController!.pushViewController(controller, animated: true)
+            })
         }
 
 

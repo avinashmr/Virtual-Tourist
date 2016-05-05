@@ -36,8 +36,6 @@ class Photo: NSManagedObject {
 
     }
 
-
-
     var flickrImage: UIImage? {
 
         get {
